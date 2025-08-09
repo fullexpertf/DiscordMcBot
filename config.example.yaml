@@ -1,0 +1,9 @@
+# Example configuration file for the Discord bot
+message_content: false
+locale: en
+database_url: sqlite+aiosqlite:///bot.db
+economy_currency: "₺"
+modules:
+  leveling: true
+  economy: true
+  automod: true

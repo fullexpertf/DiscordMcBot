@@ -14,7 +14,8 @@ initial_extensions = [
     "cogs.economy",
     "cogs.levels",
     "cogs.music",
-    "cogs.minecraft"
+    "cogs.minecraft",
+    "cogs.setup",
 ]
 
 @bot.event

@@ -1,8 +1,11 @@
 import discord
 from discord.ext import commands
-import youtube_dl
+import asyncio
+import yt_dlp
 
-ytdl = youtube_dl.YoutubeDL({"format": "bestaudio", "quiet": True})
+ytdl_opts = {"format": "bestaudio/best", "quiet": True, "noplaylist": True}
+ytdl = yt_dlp.YoutubeDL(ytdl_opts)
+ffmpeg_opts = {"options": "-vn"}
 
 class Music(commands.Cog):
     def __init__(self, bot):
@@ -10,10 +13,17 @@ class Music(commands.Cog):
 
     @commands.hybrid_command()
     async def play(self, ctx, url: str):
+        """Verilen YouTube URL'sinden müzik çalar."""
+        if not ctx.author.voice:
+            await ctx.send("Önce bir ses kanalına katılmalısın.")
+            return
+
         await ctx.defer()
         vc = ctx.voice_client or await ctx.author.voice.channel.connect()
-        data = ytdl.extract_info(url, download=False)
-        source = await discord.FFmpegOpusAudio.from_probe(data["url"])
+        loop = asyncio.get_running_loop()
+        data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=False))
+        stream_url = data["url"] if "url" in data else data["formats"][0]["url"]
+        source = discord.FFmpegPCMAudio(stream_url, **ffmpeg_opts)
         vc.play(source, after=lambda e: print("Çalma tamamlandı."))
         await ctx.send("Çalma başladı.")
 

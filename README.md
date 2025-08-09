@@ -30,3 +30,4 @@ Komutlar hem slash (`/komut`) hem de metin prefix'i (`!komut`) ile çalışır.
 | `play <url>` | YouTube bağlantısından müzik çalar. |
 | `stop` | Ses kanalındaki çalmayı durdurur. |
 | `mcstatus <adres>` | Minecraft sunucusunun durumunu kontrol eder. |
+| `setup <welcome> <log> <level_up>` | Sunucu için karşılama, log ve seviye kanallarını ayarlar. |
